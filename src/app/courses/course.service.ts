@@ -1,4 +1,6 @@
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
 import { Course } from "./course";
 // quando o modulo raiz('app module') for carregado ele carregará essa classe de serviço tb. 
 @Injectable({
@@ -6,21 +8,32 @@ import { Course } from "./course";
 })
 export class CourseService{
 
+
+    private courseUrl: string = 'http://localhost:3100/api/courses';
+
+    constructor(private httpClient: HttpClient){}
+
+
     // Nas classses de serviço é bom ter metodos chamem outras operações e variaveis estáticas que não são alteradas.
-    retrieveAll(): Course[]{
-        return COURSES;
+    retrieveAll(): Observable<Course[]>{
+        return this.httpClient.get<Course[]>(this.courseUrl);
     }
 
-    retrieveById(id: number): Course{
-        return COURSES.find((courseIterator: Course) => courseIterator.id === id)!;
+    retrieveById(id: number): Observable<Course>{
+        return this.httpClient.get<Course>(`${this.courseUrl}/${id}`);
 
     }
 
-    save(course:Course): void{
+    save(course:Course): Observable<Course>{
         if(course.id){
-            const index = COURSES.findIndex((courseIterator: Course)=> courseIterator.id === course.id);
-            COURSES[index] = course;
+            return this.httpClient.put<Course>(`${this.courseUrl}/${course.id}`,course);
+        }else{
+            return this.httpClient.post<Course>(`${this.courseUrl}`,course);
         }
+    }
+
+    deleteById(id: number): Observable<any>{
+        return this.httpClient.delete<any>(`${this.courseUrl}/${id}`);
     }
 
 }

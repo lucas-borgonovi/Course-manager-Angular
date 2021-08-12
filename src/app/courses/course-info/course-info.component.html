@@ -2,8 +2,8 @@
 
 
 <hr/>
-
-<form #courseForm = "ngForm">
+<!-- ngIf so renderiza o form se o course tiver algum dado -->
+<form #courseForm = "ngForm" *ngIf="course">
 
     <div class="form-group row">
         <label class="col-sm-2 col-form-label">Name:</label>

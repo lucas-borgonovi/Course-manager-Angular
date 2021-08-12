@@ -35,7 +35,8 @@
             <td>{{course.releaseDate | date: 'dd/MM/yyyy'}}</td>
             <td>
                 <!-- router link recebe uma url e um path variable da url -->
-                <a [routerLink]="['/courses/info', course.id]" class="btn btn-primary">Edit</a>
+                <a [routerLink]="['/courses/info', course.id]" class="btn btn-primary mr-2">Edit</a>
+                <button class="btn btn-danger" (click)="deleteById(course.id)">Delete</button>
             </td>
         </tr>
     </tbody>
